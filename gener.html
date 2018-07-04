@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>work</title>
+    <script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+</head>
+
+<style type="text/css"></style>
+
+<body>
+    freq: <input type="input" id='freq' value="440" /> <br>
+    time: <input type="input" id='sec' value="1" /> <br>
+    <button id="button">ok</button>
+</body>
+</html>
+
+<script>
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+    var channels = 2
+    var myArrayBuffer
+
+    $('#button').click ( function() {
+            var k = parseFloat($('#freq').val()) * Math.PI * 2 / audioCtx.sampleRate *2
+            frameCount = parseFloat($('#sec').val()) * audioCtx.sampleRate;
+            myArrayBuffer = audioCtx.createBuffer(2, frameCount, audioCtx.sampleRate);
+
+            for (var channel = 0; channel < channels; channel++) {
+                var nowBuffering = myArrayBuffer.getChannelData(channel);
+                for (var i = 0; i < frameCount; i++) {
+                    nowBuffering[i] = Math.sin(i*k);
+                }
+            }
+            var source = audioCtx.createBufferSource();
+            source.buffer = myArrayBuffer;
+            source.connect(audioCtx.destination);
+            source.start();
+        } 
+    )
+    
+</script>
