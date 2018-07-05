@@ -1,0 +1,31 @@
+body {
+  background-color: rgb(37, 37, 37);
+  padding: 0em 12em;
+  font-family: '微软雅黑';
+}
+
+h1{
+    margin: 0;
+    text-align: center;
+}
+
+.block{
+    width:100%;
+    height: auto;
+    font-size: 1.5em;
+    padding: 0.5em 1em;
+}
+
+.black_block{
+    background-color: rgb(25, 25, 25);
+    color: rgb(230, 230, 230);
+}
+
+.white_block{
+    background-color: rgb(230, 230, 230);
+    color: rgb(25, 25, 25);
+}
+
+.para{
+  
+}
