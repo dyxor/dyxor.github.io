@@ -4,8 +4,8 @@ analyser.fftSize = 2048;
 analyser.smoothingTimeConstant = 0.0;
 
 let buffer = new Uint8Array(analyser.frequencyBinCount);
-let threshold = 0.8, musa = 3, moku = 50
-let got_bits = ''
+let threshold = 0.8, musa = 10, moku = 50
+let got_bits = '', asc = 0
 
 // connect nodes
 navigator.mediaDevices.getUserMedia({audio: true})
@@ -17,15 +17,19 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
 // recieve 700+ signals for 1s audio
 
+log('a'.charCodeAt(0).toString(2),'b'.charCodeAt(0).toString(2),'c'.charCodeAt(0).toString(2))
+
 const add_bit = (x)=>{
     if(x<0){
         got_bits=''
         return
     }
-    got_bits = x.toString() + got_bits
+    got_bits += x.toString()
+    asc = (asc << 1) | x
     log(got_bits)
     if(got_bits.length==8){
-        log(got_bits)
+        log(String.fromCharCode(asc))
+        asc = 0
     }
 }
 

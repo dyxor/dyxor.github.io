@@ -1,8 +1,9 @@
 var audioCtx = new AudioContext()
 var channels = 2
 var myArrayBuffer
-var duration = 0.1
-var frameper = duration * audioCtx.sampleRate
+var duration = 0.1, mute = 0.02
+var ftime = duration + mute
+var frameper = ftime * audioCtx.sampleRate
 
 const get_bits = (s)=>{
     let re = []
@@ -19,7 +20,7 @@ const get_bits = (s)=>{
 
 const gener_wave = (msg)=>{
     let bits = get_bits(msg)
-    let sec = bits.length * duration
+    let sec = bits.length * ftime
     let frameCount = sec * audioCtx.sampleRate;
     let myArrayBuffer = audioCtx.createBuffer(2, frameCount, audioCtx.sampleRate);
 
@@ -27,7 +28,7 @@ const gener_wave = (msg)=>{
         let k = freqbell[bit] * Math.PI * 2 / audioCtx.sampleRate *2
         for (let channel = 0; channel < channels; channel++) {
             let nowBuffering = myArrayBuffer.getChannelData(channel);
-            for (let j = i*frameper; j < (i+1)*frameper; j++) {
+            for (let j = i*frameper; j < i*frameper + duration * audioCtx.sampleRate; j++) {
                 nowBuffering[j] = Math.sin(j*k);
             }
         }
@@ -44,6 +45,9 @@ $('#encode').click(() => {
 })
 
 $('#ok').click(() => {
-    duration = +$('#dur').val()
-    frameper = duration * audioCtx.sampleRate
+    duration = +$('#dur').val() * 0.001
+    mute = +$('#mut').val() * 0.001
+    ftime = duration + mute
+    frameper = ftime * audioCtx.sampleRate
+    log(duration, mute, ftime, frameper)
 })
