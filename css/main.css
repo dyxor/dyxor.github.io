@@ -1,6 +1,6 @@
 body {
   background-color: rgb(40, 40, 40);
-  padding: 0em 14em;
+  padding: 0 10%;
   font-family: '微软雅黑';
 }
 
@@ -9,6 +9,10 @@ h1{
     text-align: center;
     font-size: 2.5em;
     padding: 0.5em 3em;
+}
+
+h2{
+  color: red;
 }
 
 h3{
