@@ -27,6 +27,11 @@ img{
   display: inline-block;
 }
 
+span{
+  font-style: italic;
+  color: #ee1100;
+}
+
 .navs:link{ color: #66ccff; text-decoration:none;}
 .navs:visited{ color: #66ccff; text-decoration:none;}
 .navs:active{ color: #ffcc66; text-decoration:none;}

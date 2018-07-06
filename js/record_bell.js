@@ -19,16 +19,14 @@ let buffer = new Uint8Array(analyser.frequencyBinCount);
 const frequencyBinValue = (f) => {
   const hzPerBin = (audioContext.sampleRate) / (2*analyser.frequencyBinCount);
   const index = parseInt((f + hzPerBin/2) / hzPerBin);
-  // log(hzPerBin, index, buffer[index])
   return buffer[index];
 };
 const isActive = (value) => {
   let threshold = +document.querySelector('#bin-value-threshold').value;
-  // if(value > threshold)log(value, threshold)
   return value > threshold;
 };
 const getState = () => {
-  return frequencies
+  return [space_freq, mark_freq]
     .map(frequencyBinValue)
     .reduce((acc, val, idx) => {
       if (isActive(val)) {
@@ -53,16 +51,13 @@ const decode = () => {
   let duplicates = 0;
   const iteration = () => {
     analyser.getByteFrequencyData(buffer);
-    // if(buffer[0])log(buffer)
     let state = getState();
+    if(state)log(state)
 
-    // if(state)log(state.toString(2))
-
-    let duplicateThreshold = +document.querySelector('#duplicate-state-threshold').value;
+    let duplicateThreshold = +$('#duplicate-state-threshold').val();
     if (state === prevState) {
       duplicates++;
-    }
-    else {
+    }else {
       trace(state);
       prevState = state;
       duplicates = 0;
