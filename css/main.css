@@ -13,6 +13,8 @@ h1{
 
 h2{
   color: red;
+  text-align: center;
+  width: 100%;
 }
 
 h3{
@@ -23,17 +25,34 @@ img{
   display: inline-block;
 }
 
+.navs{
+  color: #66ccff;
+}
+
 #mako{
   position: fixed;
   margin: 0;
-  right: 8em;
+  right: 11em;
   bottom: 2em;
   transform: rotateY(0deg);
   transition: right 0.5s,bottom 0.5s,transform 1.5s
 }
 
+#nav{
+  font-size: 1.2em;
+  font-weight: bolder;
+  width: 9%;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgb(235, 235, 235);
+  position: fixed;
+  margin: 0;
+  left: 1em;
+  top: 2em;
+}
+
 #mako:hover{
-  right: 9em;
+  right: 12em;
   bottom: 2em;
 }
 
@@ -47,6 +66,19 @@ img{
     font-size: 1.5em;
     padding: 0.5em 1em;
     box-shadow: 10px 10px 1.5em rgb(20, 20, 20);
+    max-height: 28em;
+    overflow-y: auto;
+}
+
+.block::-webkit-scrollbar {
+    width: 0.4em;
+    height: auto;
+}
+
+.block::-webkit-scrollbar-thumb {
+  background-color: rgb(66, 66, 66);
+  outline: 1px solid slategrey;
+  border-radius: 2em;
 }
 
 .black_block{
@@ -60,6 +92,7 @@ img{
 }
 
 .para{
+  width: 100%;
   display: inline-block;
   font-weight: bold;
   font-size: 1.2em;
