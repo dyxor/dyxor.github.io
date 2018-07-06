@@ -1,6 +1,6 @@
 body {
-  background-color: rgb(37, 37, 37);
-  padding: 0em 12em;
+  background-color: rgb(40, 40, 40);
+  padding: 0em 14em;
   font-family: '微软雅黑';
 }
 
@@ -8,6 +8,33 @@ h1{
     margin: 0;
     text-align: center;
     font-size: 2.5em;
+    padding: 0.5em 3em;
+}
+
+h3{
+  font-style: italic;
+}
+
+img{
+  display: inline-block;
+}
+
+#mako{
+  position: fixed;
+  margin: 0;
+  right: 8em;
+  bottom: 2em;
+  transform: rotateY(0deg);
+  transition: right 0.5s,bottom 0.5s,transform 1.5s
+}
+
+#mako:hover{
+  right: 9em;
+  bottom: 2em;
+}
+
+#tt{
+  transition: color 0.8s
 }
 
 .block{
@@ -15,6 +42,7 @@ h1{
     height: auto;
     font-size: 1.5em;
     padding: 0.5em 1em;
+    box-shadow: 10px 10px 1.5em rgb(20, 20, 20);
 }
 
 .black_block{
@@ -28,14 +56,8 @@ h1{
 }
 
 .para{
+  display: inline-block;
   font-weight: bold;
   font-size: 1.2em;
 }
 
-h1{
-  padding: 0.5em 3em;
-}
-
-h3{
-  font-style: italic;
-}
