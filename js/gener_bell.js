@@ -1,80 +1,49 @@
-let oscillators = (function initialize() {
-    audioContext = new AudioContext();
-    // create audio nodes
-    let masterGain = audioContext.createGain();
-    masterGain.gain.value = 0.5;
+var audioCtx = new AudioContext()
+var channels = 2
+var myArrayBuffer
+var duration = 0.1
+var frameper = duration * audioCtx.sampleRate
 
-    let sinusoids = [space_freq, mark_freq].map(f => {
-      let oscillator = audioContext.createOscillator();
-      oscillator.type = 'sine';
-      oscillator.frequency.value = f;
-      oscillator.start();
-      return oscillator;
-    });
-    let oscillators = [mark_freq, space_freq].map(f => {
-      let volume = audioContext.createGain();
-      volume.gain.value = 0;
-      return volume;
-    });
-    // connect nodes
-    sinusoids.forEach((sine, i) => sine.connect(oscillators[i]));
-    oscillators.forEach((osc) => osc.connect(masterGain));
-    masterGain.connect(audioContext.destination);
-    return oscillators;
-})();
-
-const mute = () => {
-  oscillators.forEach(osc => {
-    osc.gain.value = 0
-  })
-}
-
-const encode = (text, onComplete) => {
-  const pause = +$('#pause-duration').val();
-  const duration = +$('#active-duration').val();
-  const timeBetweenChars = pause + duration;
-
-  text.split('').forEach((char, i) => {
-    let charCode = char.charCodeAt(0)
-    let bits = []
-    for(let j=0;j<8;++j){
-      bits.push(charCode & 1)
-      charCode >>= 1
-    }
-
-    bits.forEach(
-      (bit, j) => {
-        window.setTimeout(
-          () => {
-            oscillators[bit].gain.value = 1;
-            window.setTimeout(mute, duration);
-          }, 
-          (i*8+j) * timeBetweenChars
-        );
+const get_bits = (s)=>{
+    let re = []
+    s.split('').forEach((x, i)=>{
+        let tmp = [], v = x.charCodeAt(0)
+        for(let j=0;j<8;++j){
+            tmp.push(v & 1)
+            v>>=1
         }
-    );
-  })
-  window.setTimeout(onComplete, text.length * timeBetweenChars * 8);
+        for(let j=7;j>=0;--j)re.push(tmp[j])
+    })
+    return re
 }
 
+const gener_wave = (msg)=>{
+    let bits = get_bits(msg)
+    let sec = bits.length * duration
+    let frameCount = sec * audioCtx.sampleRate;
+    let myArrayBuffer = audioCtx.createBuffer(2, frameCount, audioCtx.sampleRate);
 
-let enc_btn = $('#encode')
-enc_btn.click(() => {
-  enc_btn.attr('disabled', 'disabled')
-  encode($('textarea').val(), ()=>{
-    enc_btn.removeAttr('disabled');
-  })
-})
-
-$('#clear').click(() => {
-  $('textarea').val('');
-})
-
-for (let input of document.querySelectorAll('input')) {
-  const selector = `label[for="${input.getAttribute('id')}"] [data-val]`;
-  let label = document.querySelector(selector);
-  label.innerHTML = input.value;
-  input.addEventListener('change', (e) => {
-    label.innerHTML = e.target.value;
-  })
+    bits.forEach((bit, i)=>{
+        let k = freqbell[bit] * Math.PI * 2 / audioCtx.sampleRate *2
+        for (let channel = 0; channel < channels; channel++) {
+            let nowBuffering = myArrayBuffer.getChannelData(channel);
+            for (let j = i*frameper; j < (i+1)*frameper; j++) {
+                nowBuffering[j] = Math.sin(j*k);
+            }
+        }
+    })
+    
+    let source = audioCtx.createBufferSource();
+    source.buffer = myArrayBuffer;
+    source.connect(audioCtx.destination);
+    source.start();
 }
+
+$('#encode').click(() => {
+    gener_wave($('textarea').val())
+})
+
+$('#ok').click(() => {
+    duration = +$('#dur').val()
+    frameper = duration * audioCtx.sampleRate
+})

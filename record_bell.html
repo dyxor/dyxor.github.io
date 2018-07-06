@@ -8,17 +8,14 @@
   </head>
 
   <body>
-    <h1>Decoder</h1>
-    <code>0b00000000</code>
-    <textarea readonly></textarea>
-    <a href="index.html">back</a>
-
     <h2>Config</h2>
     <label for="bin-value-threshold">Significant bin byte value threshold: <span data-val></span>
     <input id="bin-value-threshold" type="range" value="1" min="1", max="255", step="1">
 
     <label for="duplicate-state-threshold">Output after consecutive duplicate states: <span data-val></span>
     <input id="duplicate-state-threshold" type="range" value="10" min="1", max="50", step="1">
+    
+    <a href="index.html">back</a>
   </body>
 
   <script src='js/util.js'></script>

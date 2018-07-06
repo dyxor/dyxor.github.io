@@ -25,15 +25,16 @@
             </ul>
             <p>技术方案</p>
             <ul>
-                <li>使用 2200-1200 的 0-1 编码
-                    <span>识别正确率过低，难以使用</span>
-                </li>
+                <li>使用 2200-1200 的 0-1 编码 <span>识别正确率过低，难以使用？</span></li>
                 <li>使用多频表示的多进制编码 √</li>
             </ul>
+            <p>
+                通过研究 spectrogram.html ，发现在buffer的id与频率会有一个貌似是倍数的关系，例如 analyser.fftSize = 2048 等设置的情况下，频率与index的比值约为11.697906909355563，且当fftSize调整为1024后，比值翻倍
+            </p>
             <p>demo</p>
             <ul>
                 <li> 多进制模式 <p><a href="gener.html">产生器</a> <a href="record.html">录音机</a></p></li>
-                <li> 0-1测试版（不能识别，测试0-1的接受度后放弃） 
+                <li> 0-1测试版（??） 
                     <p><a href="gener_bell.html">产生器</a> <a href="record_bell.html">录音机</a></p>
                 </li>
             </ul>

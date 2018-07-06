@@ -39,7 +39,7 @@ span{
 #mako{
   position: fixed;
   margin: 0;
-  right: 11em;
+  right: 11%;
   bottom: 2em;
   transform: rotateY(0deg);
   transition: right 0.5s,bottom 0.5s,transform 1.5s
@@ -59,7 +59,7 @@ span{
 }
 
 #mako:hover{
-  right: 12em;
+  right: 12%;
   bottom: 2em;
 }
 

@@ -28,3 +28,4 @@ $('#mako').click(()=>{
     $('#nav').html($('#nav').html()+'<ol>'+navs+'</ol>')
     
 })()
+
