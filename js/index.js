@@ -5,10 +5,14 @@ $('#mako').click(()=>{
         _mako.css('transform', 'rotateY(0deg)')
     }else{
         _mako.attr('sta', 1)
-        _mako.css('transform', 'rotateY(360deg)')
+        _mako.css('transform', 'rotateY(900deg)')
     }
     $('#tt').css('color', 'rgb(250,233,145)')
-    setTimeout(()=>{$('#tt').css('color', 'rgb(230,230,230)')}, 850)
+    $('#tt').css('font-size', '3em')
+    setTimeout(()=>{
+        $('#tt').css('color', 'rgb(230,230,230)')
+        $('#tt').css('font-size', '2.5em')
+    }, 550)
 });
 
 (()=>{
