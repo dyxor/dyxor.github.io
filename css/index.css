@@ -1,7 +1,7 @@
 body {
   background-color: rgb(40, 40, 40);
   padding: 0 10%;
-  font-family: '微软雅黑';
+  font-family: '华文细黑';
 }
 
 h1{
@@ -14,7 +14,9 @@ h1{
 h2{
   color: red;
   text-align: center;
-  width: 100%;
+  margin: 0;
+  width: auto;
+  height: auto;
 }
 
 h3{
@@ -25,9 +27,9 @@ img{
   display: inline-block;
 }
 
-.navs{
-  color: #66ccff;
-}
+.navs:link{ color: #66ccff; text-decoration:none;}
+.navs:visited{ color: #66ccff; text-decoration:none;}
+.navs:active{ color: #ffcc66; text-decoration:none;}
 
 #mako{
   position: fixed;
@@ -39,7 +41,7 @@ img{
 }
 
 #nav{
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: bolder;
   width: 9%;
   height: auto;
@@ -63,10 +65,10 @@ img{
 .block{
     width:100%;
     height: auto;
-    font-size: 1.5em;
+    font-size: 1.2em;
     padding: 0.5em 1em;
     box-shadow: 10px 10px 1.5em rgb(20, 20, 20);
-    max-height: 28em;
+    max-height: 30em;
     overflow-y: auto;
 }
 

@@ -1,40 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>work</title>
-    <script src="js/jquery-1.4.1.min.js"></script>
-</head>
+  <head>
+      <meta charset="utf-8">
+      <title>Audio Wave Gener</title>
+      <script src="js/jquery-1.4.1.min.js"></script>
+      <link rel="stylesheet" href="css/wave.css">
+  </head>
+  <body>
+    <h1>Encoder</h1>
+    <textarea></textarea>
+      <button id="encode">encode</button>
+      <button id="clear">clear</button>
+      <a href="index.html">back</a>
 
-<style type="text/css"></style>
+    <h2>Config</h2>
+    <label for="active-duration">Bit high duration: <span data-val></span> ms
+    <input id="active-duration" type="range" value="100" min="10", max="1000", step="10">
 
-<body>
-    freq: <input type="input" id='freq' value="440" /> <br>
-    time: <input type="input" id='sec' value="1" /> <br>
-    <button id="button">ok</button>
-</body>
+    <label for="pause-duration">Pause between bytes: <span data-val></span> ms
+    <input id="pause-duration" type="range" value="20" min="0", max="500", step="10">
+
+  </body>
+    <script src='js/util.js'></script>
+    <script src='js/waves.js'></script>
+    <script src='js/gener.js'></script>
 </html>
-
-<script>
-    var audioCtx = new (window.AudioContext || window.webkitAudioContext)()
-    var channels = 2
-    var myArrayBuffer
-
-    $('#button').click ( function() {
-            var k = parseFloat($('#freq').val()) * Math.PI * 2 / audioCtx.sampleRate *2
-            frameCount = parseFloat($('#sec').val()) * audioCtx.sampleRate;
-            myArrayBuffer = audioCtx.createBuffer(2, frameCount, audioCtx.sampleRate);
-
-            for (var channel = 0; channel < channels; channel++) {
-                var nowBuffering = myArrayBuffer.getChannelData(channel);
-                for (var i = 0; i < frameCount; i++) {
-                    nowBuffering[i] = Math.sin(i*k);
-                }
-            }
-            var source = audioCtx.createBufferSource();
-            source.buffer = myArrayBuffer;
-            source.connect(audioCtx.destination);
-            source.start();
-        } 
-    )
-    
-</script>
