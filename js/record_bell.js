@@ -6,7 +6,7 @@ analyser.smoothingTimeConstant = 0.0;
 let buffer = new Uint8Array(analyser.frequencyBinCount);
 let threshold = 0.8, musa = 2, moku = 18
 let got_bits = '', asc = 0
-let framesec = 28
+let framesec = 33
 
 // Init
 navigator.mediaDevices.getUserMedia({audio: true})
@@ -20,20 +20,25 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
 log(bin_str('a'),bin_str('b'),bin_str('c'))
 
+const add_byte = (x)=>{
+    $('textarea').val($('textarea').val()+String.fromCharCode(x)) 
+    
+}
+
 const add_bit = (x, n)=>{
     if(x<0){ got_bits=''; asc = 0; return; }
 
     for(let i=0;i<n;++i){
         got_bits+=x.toString()
         asc = (asc << 1) | x
+        if(got_bits.length==8){
+            add_byte(asc)
+            got_bits = ''
+            asc = 0
+        }
     }
 
     log(got_bits)
-
-    if(got_bits.length==8){
-        log(String.fromCharCode(asc))
-        asc = 0
-    }
 }
 
 const work = () => {
@@ -58,9 +63,11 @@ const work = () => {
         if(last==-1){
             if(tpass>=framesec)add_bit(-1, 1);
         }else{
-            add_bit(last, ~~(tpass/framesec))
+            let nn = ~~(tpass/framesec)
+            if(nn) add_bit(last, nn);
+            else if(tpass > framesec*0.5)add_bit(last, 1);
         }
-        log('Signal change:', last,' ',now,' ',tpass, ~~(tpass/framesec))
+        if(tpass > framesec*0.5)log('Signal change:', last,' ',now,' ',tpass, ~~(tpass/framesec))
         tpass = 0
         last = now
     }
@@ -68,7 +75,12 @@ const work = () => {
   window.setInterval(loop, 1);
 }
 
-work()
+work();
+
+(()=>{
+    $('#fbi').val(threshold)
+    $('#cia').val(framesec)
+})()
 
 $('#ok').click(() => {
     threshold = +$('#fbi').val()
