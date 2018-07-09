@@ -63,5 +63,5 @@ $('#ok').click(() => {
     set_arg(+$('#dur').val(), +$('#mut').val())
 })
 
-$('#fast').click(()=>{set_arg(60, 5)})
-$('#normal').click(()=>{set_arg(120, 20)})
+$('#fast').click(()=>{set_arg(60, 3)})
+$('#normal').click(()=>{set_arg(120, 10)})
