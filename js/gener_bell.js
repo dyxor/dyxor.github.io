@@ -48,6 +48,6 @@ $('#ok').click(() => {
     duration = +$('#dur').val() * 0.001
     mute = +$('#mut').val() * 0.001
     ftime = duration + mute
-    frameper = ftime * audioCtx.sampleRate
+    frameper = ~~(ftime * audioCtx.sampleRate)
     log(duration, mute, ftime, frameper)
 })
