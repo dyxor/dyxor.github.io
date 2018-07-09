@@ -44,10 +44,24 @@ $('#encode').click(() => {
     gener_wave($('textarea').val())
 })
 
-$('#ok').click(() => {
-    duration = +$('#dur').val() * 0.001
-    mute = +$('#mut').val() * 0.001
+
+const arg_show=()=>{
+    $('#dur').val(duration*1000)
+    $('#mut').val(mute*1000)
+}
+
+const set_arg = (x,y)=>{
+    duration = x * 0.001
+    mute = y * 0.001
     ftime = duration + mute
     frameper = ~~(ftime * audioCtx.sampleRate)
-    log(duration, mute, ftime, frameper)
+    log('Set args:', duration, mute, ftime, frameper)
+    arg_show()
+}
+
+$('#ok').click(() => {
+    set_arg(+$('#dur').val(), +$('#mut').val())
 })
+
+$('#fast').click(()=>{set_arg(60, 5)})
+$('#normal').click(()=>{set_arg(120, 20)})

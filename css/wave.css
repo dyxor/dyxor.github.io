@@ -33,6 +33,7 @@ button{
 }
 
 a{
+    font-weight: bolder;
     font-size: 1.2em;
     color: rgb(233,233,233);
 }

@@ -1,12 +1,12 @@
-let audioContext = new AudioContext();
-let analyser = audioContext.createAnalyser();
+var audioContext = new AudioContext();
+var analyser = audioContext.createAnalyser();
 analyser.fftSize = 2048;
 analyser.smoothingTimeConstant = 0.0;
 
-let buffer = new Uint8Array(analyser.frequencyBinCount);
-let threshold = 0.8, musa = 2, moku = 18
-let got_bits = '', asc = 0
-let framesec = 33
+var buffer = new Uint8Array(analyser.frequencyBinCount);
+var threshold = 0.8, musa = 2, moku = 18
+var got_bits = '', asc = 0
+var framesec = 33
 
 // Init
 navigator.mediaDevices.getUserMedia({audio: true})
@@ -18,11 +18,10 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
 // Work
 
-log(bin_str('a'),bin_str('b'),bin_str('c'))
+log(bin_str('abc'))
 
 const add_byte = (x)=>{
     $('textarea').val($('textarea').val()+String.fromCharCode(x)) 
-    
 }
 
 const add_bit = (x, n)=>{
@@ -42,9 +41,9 @@ const add_bit = (x, n)=>{
 }
 
 const work = () => {
-  let last = -1
+  let last = -1, tpass = 0, last_show = 0
   let idx_mark = ~~(freqbell[1] / bli), idx_space = ~~(freqbell[0] / bli)
-  let tpass = 0
+
   const loop = ()=>{
     let now = -1
     if(tpass<10000)tpass++
@@ -67,7 +66,10 @@ const work = () => {
             if(nn) add_bit(last, nn);
             else if(tpass > framesec*0.5)add_bit(last, 1);
         }
-        if(tpass > framesec*0.5)log('Signal change:', last,' ',now,' ',tpass, ~~(tpass/framesec))
+        if(tpass > framesec*0.5 && (now!=last_show || last_show!=-1)){
+            log('Signal change:', last,' ',now,' ',tpass, ~~(tpass/framesec))
+            last_show = now
+        }
         tpass = 0
         last = now
     }
@@ -77,13 +79,21 @@ const work = () => {
 
 work();
 
-(()=>{
+// functions
+
+const arg_show=()=>{
     $('#fbi').val(threshold)
     $('#cia').val(framesec)
-})()
+}
 
-$('#ok').click(() => {
-    threshold = +$('#fbi').val()
-    framesec = +$('#cia').val()
-    log('#', threshold, framesec)
-})
+(()=>arg_show())()
+
+const set_arg = (x,y)=>{
+    threshold, framesec = (x, y)
+    arg_show()
+    log('Set args:', threshold, framesec)
+}
+
+$('#ok').click(()=>{set_arg(+$('#fbi').val(), +$('#cia').val())})
+$('#fast').click(()=>{set_arg(0.8, 15)})
+$('#normal').click(()=>{set_arg(0.8, 33)})
