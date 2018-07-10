@@ -3,6 +3,8 @@ const freqbell = [space_freq, mark_freq]
 const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 const AudioContext = window.AudioContext || window.webkitAudioContext
 const bli = 11.697906909355563
+const pre_code = '01011'.split('').map((x)=>+x)
+const pre_len = pre_code.length
 
 const chr = (x)=>x.charCodeAt(0)
 

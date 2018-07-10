@@ -1,7 +1,7 @@
 var audioCtx = new AudioContext()
 var channels = 2
 var myArrayBuffer
-var duration = 0.1, mute = 0.02
+var duration = 0.06, mute = 0.003
 var ftime = duration + mute
 var frameper = ftime * audioCtx.sampleRate
 
@@ -20,6 +20,8 @@ const get_bits = (s)=>{
 
 const gener_wave = (msg)=>{
     let bits = get_bits(msg)
+    bits = pre_code.concat(bits)
+    // log(bits)
     let sec = bits.length * ftime
     let frameCount = sec * audioCtx.sampleRate;
     let myArrayBuffer = audioCtx.createBuffer(2, frameCount, audioCtx.sampleRate);

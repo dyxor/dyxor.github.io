@@ -5,6 +5,7 @@ body {
 }
 
 h1{
+  font-family: "微软雅黑";
     margin: 0;
     text-align: center;
     font-size: 2.5em;
@@ -12,6 +13,7 @@ h1{
 }
 
 h2{
+  font-family: "微软雅黑";
   color: red;
   text-align: center;
   margin: 0;
@@ -29,6 +31,19 @@ img{
 
 span{
   font-style: italic;
+  color: #ee1100;
+}
+
+onl{
+  font-family: "微软雅黑";
+  display: block;
+  color: #ee1100;
+}
+
+oul{
+  font-family: "微软雅黑";
+  display: block;
+  text-decoration: line-through;
   color: #ee1100;
 }
 

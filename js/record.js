@@ -5,8 +5,8 @@ analyser.smoothingTimeConstant = 0.0;
 
 var buffer = new Uint8Array(analyser.frequencyBinCount);
 var threshold = 0.8, musa = 2, moku = 18
-var got_bits = '', asc = 0
-var framesec = 33
+var got_bits = '', asc = 0, pre_id = 0
+var framesec = 15
 
 // Init
 navigator.mediaDevices.getUserMedia({audio: true})
@@ -25,7 +25,17 @@ const add_byte = (x)=>{
 }
 
 const add_bit = (x, n)=>{
-    if(x<0){ got_bits=''; asc = 0; return; }
+    if(x<0){ got_bits=''; asc = 0; pre_id=0; return; }
+
+    if(pre_id < pre_len){
+        if(x==pre_code[pre_id]){
+            ++pre_id;
+            if(pre_id>=pre_len)log('Pre-code got.')
+        }else{
+            pre_id=0;
+        }
+        return
+    }
 
     for(let i=0;i<n;++i){
         got_bits+=x.toString()
@@ -46,7 +56,7 @@ const work = () => {
 
   const loop = ()=>{
     let now = -1
-    if(tpass<10000)tpass++
+    if(tpass<1000)tpass++
     analyser.getByteFrequencyData(buffer);
 
     buffer.slice(idx_mark-musa, idx_mark+musa).forEach((x, i)=>{
@@ -66,8 +76,8 @@ const work = () => {
             if(nn) add_bit(last, nn);
             else if(tpass > framesec*0.5)add_bit(last, 1);
         }
-        if(tpass > framesec*0.5 && (now!=last_show || last_show!=-1)){
-            log('Signal change:', last,' ',now,' ',tpass, ~~(tpass/framesec))
+        if(tpass > framesec*0.45 && (now!=last_show || last_show!=-1)){
+            log('Signal change:', last,'->',now,' ',tpass, ~~(tpass/framesec))
             last_show = now
         }
         tpass = 0
@@ -96,4 +106,4 @@ const set_arg = (x,y)=>{
 
 $('#ok').click(()=>{set_arg(+$('#fbi').val(), +$('#cia').val())})
 $('#fast').click(()=>{set_arg(0.8, 15)})
-$('#normal').click(()=>{set_arg(0.8, 33)})
+$('#normal').click(()=>{set_arg(0.8, 32)})
