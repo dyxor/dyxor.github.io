@@ -18,22 +18,28 @@ navigator.mediaDevices.getUserMedia({audio: true})
 
 // Work
 
-log(bin_str('abc'))
+// log(bin_str('abc'))
 
 const add_byte = (x)=>{
     $('textarea').val($('textarea').val()+String.fromCharCode(x)) 
 }
 
 const add_bit = (x, n)=>{
-    if(x<0){ got_bits=''; asc = 0; pre_id=0; return; }
+    if(x<0){ got_bits=''; asc = 0; pre_id=0; log('Pre-code lost!'); return; }
 
     if(pre_id < pre_len){
-        if(x==pre_code[pre_id]){
-            ++pre_id;
-            if(pre_id>=pre_len)log('Pre-code got.')
-        }else{
-            pre_id=0;
+        for(let i=1;i<=n;++i){
+            if(x==pre_code[pre_id]){
+                ++pre_id;
+                if(pre_id>=pre_len){
+                    log('Pre-code got!')
+                    if(n>i)add_bit(x, n-i)
+                }
+            }else{
+                pre_id=0
+            }
         }
+        log(pre_id)
         return
     }
 
@@ -50,7 +56,14 @@ const add_bit = (x, n)=>{
     log(got_bits)
 }
 
+const cal_n = (t)=>{
+    let re = ~~(t/framesec)
+    t -= re*framesec
+    return re + (t > framesec*0.6 ? 1 : 0)
+}
+
 const work = () => {
+  log('Start listening.')
   let last = -1, tpass = 0, last_show = 0
   let idx_mark = ~~(freqbell[1] / bli), idx_space = ~~(freqbell[0] / bli)
 
@@ -72,12 +85,11 @@ const work = () => {
         if(last==-1){
             if(tpass>=framesec)add_bit(-1, 1);
         }else{
-            let nn = ~~(tpass/framesec)
-            if(nn) add_bit(last, nn);
-            else if(tpass > framesec*0.5)add_bit(last, 1);
+            let nn = cal_n(tpass)
+            add_bit(last, nn);
         }
-        if(tpass > framesec*0.45 && (now!=last_show || last_show!=-1)){
-            log('Signal change:', last,'->',now,' ',tpass, ~~(tpass/framesec))
+        if(tpass > framesec*0.45 && (now!=-1 || last_show!=-1)){
+            log('Signal change:', last,'->',now,' ',tpass, cal_n(tpass))
             last_show = now
         }
         tpass = 0
